@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Калькулятор + Формулы</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f5f5f5;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .calculator {
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      padding: 20px;
+      width: 320px;
+      margin-top: 20px;
+    }
+
+    .display {
+      background-color: #eee;
+      padding: 10px;
+      border-radius: 5px;
+      font-size: 24px;
+      text-align: right;
+      margin-bottom: 10px;
+      overflow: auto;
+    }
+
+    .buttons {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+
+    button {
+      padding: 15px;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      background-color: #e0e0e0;
+    }
+
+    button:hover {
+      background-color: #d0d0d0;
+    }
+
+    .operator {
+      background-color: #ff9800;
+      color: white;
+    }
+
+    .clear {
+      background-color: #f44336;
+      color: white;
+    }
+
+    .equals {
+      background-color: #4caf50;
+      color: white;
+      grid-column: span 2;
+    }
+
+    .parallelepiped-formulas {
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      padding: 20px;
+      width: 320px;
+      margin-top: 20px;
+      font-size: 14px;
+    }
+
+    .parallelepiped-formulas h3 {
+      margin-top: 0;
+      text-align: center;
+    }
+
+    .formula {
+      margin-bottom: 8px;
+    }
+
+    .links-section, .easter-egg {
+      margin: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .links-section a, .easter-egg a {
+      text-decoration: none;
+      background-color: #2196f3;
+      color: white;
+      padding: 10px 15px;
+      border-radius: 5px;
+      font-weight: bold;
+    }
+
+    .easter-egg a:last-child {
+      background-color: #e91e63;
+    }
+
+    .spacer {
+      height: 30px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="calculator">
+    <div class="display" id="display">0</div>
+    <div class="buttons">
+      <button class="clear" onclick="clearDisplay()">C</button>
+      <button onclick="appendToDisplay('(')">(</button>
+      <button onclick="appendToDisplay(')')">)</button>
+      <button class="operator" onclick="appendToDisplay('/')">/</button>
+
+      <button onclick="appendToDisplay('7')">7</button>
+      <button onclick="appendToDisplay('8')">8</button>
+      <button onclick="appendToDisplay('9')">9</button>
+      <button class="operator" onclick="appendToDisplay('*')">×</button>
+
+      <button onclick="appendToDisplay('4')">4</button>
+      <button onclick="appendToDisplay('5')">5</button>
+      <button onclick="appendToDisplay('6')">6</button>
+      <button class="operator" onclick="appendToDisplay('-')">-</button>
+
+      <button onclick="appendToDisplay('1')">1</button>
+      <button onclick="appendToDisplay('2')">2</button>
+      <button onclick="appendToDisplay('3')">3</button>
+      <button class="operator" onclick="appendToDisplay('+')">+</button>
+
+      <button onclick="appendToDisplay('0')">0</button>
+      <button onclick="appendDecimal()">.</button>
+      <button class="equals" onclick="calculate()">=</button>
+      <button onclick="calculateCos()">cos</button>
+      <button onclick="window.open('https://ru.onlinemschool.com/math/assistance/number_theory/division/', '_blank')">÷ в столбик</button>
+    </div>
+  </div>
+
+  <div class="spacer"></div>
+
+  <div class="parallelepiped-formulas">
+    <h3>📐 Формулы параллелепипеда</h3>
+    <div class="formula"><strong>Объём:</strong> V = a × b × c</div>
+    <div class="formula"><strong>Площадь:</strong> S = 2(ab + bc + ac)</div>
+    <div class="formula"><strong>Диагональ:</strong> d = √(a² + b² + c²)</div>
+    <div class="formula"><strong>Грань ab:</strong> d<sub>ab</sub> = √(a² + b²)</div>
+    <div style="font-size: 12px; color: #777;"><em>a, b, c — длины рёбер</em></div>
+  </div>
+
+  <div class="links-section">
+    <a href="https://gdz.ru/" target="_blank">ГДЗ</a>
+    <a href="https://www.deepl.com/en/translator//l/de/en" target="_blank">Переводчик</a>
+  </div>
+
+  <div class="easter-egg">
+    <a href="https://www.google.com/search?q=15+social+credit" target="_blank">пасхалочкааа ыыы</a>
+    <a href="https://youtu.be/NDT6k7_y3AY?si=H8rIdQRaiY7nyF6X" target="_blank">песенка</a>
+  </div>
+
+  <script>
+    let currentDisplay = '0';
+    const display = document.getElementById('display');
+
+    function updateDisplay() {
+      display.textContent = currentDisplay;
+    }
+
+    function appendToDisplay(value) {
+      if (currentDisplay === '0' && value !== '.') {
+        currentDisplay = value;
+      } else {
+        currentDisplay += value;
+      }
+      updateDisplay();
+    }
+
+    function appendDecimal() {
+      const parts = currentDisplay.split(/[\+\-\*\/]/);
+      const lastPart = parts[parts.length - 1];
+      if (!lastPart.includes('.')) {
+        currentDisplay += lastPart === '' ? '0.' : '.';
+        updateDisplay();
+      }
+    }
+
+    function clearDisplay() {
+      currentDisplay = '0';
+      updateDisplay();
+    }
+
+    function calculate() {
+      try {
+        const result = eval(currentDisplay.replace(/×/g, '*'));
+        currentDisplay = result.toString();
+        updateDisplay();
+      } catch {
+        currentDisplay = 'Ошибка';
+        updateDisplay();
+        setTimeout(clearDisplay, 1000);
+      }
+    }
+
+    function calculateCos() {
+      try {
+        const result = Math.cos(eval(currentDisplay));
+        currentDisplay = result.toString();
+        updateDisplay();
+      } catch {
+        currentDisplay = 'Ошибка';
+        updateDisplay();
+        setTimeout(clearDisplay, 1000);
+      }
+    }
+
+    updateDisplay();
+  </script>
+</body>
+</html>
